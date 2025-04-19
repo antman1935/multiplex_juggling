@@ -27,7 +27,7 @@ class StateGraph:
         if (self.sequences == None):
             self.sequences = util.getMultiplexJugglingSequencesFromStates(self.baseState, self.finalState, self.length)
         print(len(self.sequences))
-        content = "\n".join([util.drawJugglingSequence(sequence) for sequence in self.sequences])
+        content = "\n\n".join([util.drawJugglingSequence(sequence) for sequence in self.sequences])
         self.write_latex_file(name + ".tex", content)
 
 
