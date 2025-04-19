@@ -1,6 +1,6 @@
 import networkx as nx
 from itertools import permutations
-from sage.all import Partitions
+from Partitions import Partitions
 
 """
 This class represents a magic multiplex juggling state with hand capacity m.
@@ -101,7 +101,7 @@ class State:
             
             height += 0.5
             
-        tikz_code += "\\draw (" + str(x_offset) + ", " + str(-height -0.5) + ") node {$" + str(self).replace("<", "\langle").replace(">", "\rangle") + "$};\n"
+        tikz_code += "\\draw (" + str(x_offset) + ", " + str(-height -0.5) + ") node {$" + str(self).replace("<", "\langle").replace(">", "\\rangle") + "$};\n"
         if arrow:
             tikz_code += "\\draw[->] (" + str(x_offset + width + 0.8) + ",0) -- (" + str(x_offset + width + 1.3) + ",0);"
         
@@ -152,8 +152,11 @@ This is the only function that needs to be called to generated magic multiplex j
 @Parameter - capacity: positive integer, maximum hand capacity of each state in each sequence.
 @Parameter - length: positive integer, the length of every sequence we return.
 """
-def getMultiplexJugglingSequences(start, end, capacity, length):
+def getMultiplexJugglingSequences(start: list[int], end: list[int], capacity: int, length: int):
     return getMultiplexJugglingSequencesHelper(State(start, capacity), State(end, capacity), capacity, length)
+
+def getMultiplexJugglingSequencesFromStates(start: State, end: State, length: int):
+    return getMultiplexJugglingSequencesHelper(start, end, start.m, length)
         
 """
 Helper function used to actually do the computations for `getMultiplexJugglingSequences`.
@@ -165,7 +168,7 @@ def getMultiplexJugglingSequencesHelper(start, end, capacity, length):
     validTransitions = getValidTransitions(capacity, maxHeight)
     
     while maxHeight >= len(end):
-        print [[str(y) for y in x] for x in frontier]
+        # print([[str(y) for y in x] for x in frontier])
         for path in frontier:
             lastState = path[len(path) - 1]
             base, balls = lastState.shiftDown()
